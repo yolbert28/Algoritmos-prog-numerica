@@ -123,5 +123,23 @@ function [raiz, iteraciones, tiempo_ejecucion] = secante(f, TOL, x0, x1, a, b)
     plot(raiz, fx_final, 'gx', 'MarkerSize', 10, 'LineWidth', 2);
     legend('Función f(x)', 'Puntos Iniciales', 'Iterados (x_k, f(x_k))', 'Raíz Obtenida', 'Location', 'SouthEast');
     hold off;
-
+% --- INICIO: Bloque de comparación con FZERO (PREGUNTA 4) ---
+disp(' ');
+disp('--- COMPARACIÓN CON FZERO ---');
+try
+    % La función ya tiene 'f_num' (el handle) y las variables 'a' y 'b'
+    intervalo_fzero = [a, b]; 
+    raiz_fzero = fzero(f_num, intervalo_fzero);
+    
+    fprintf('%-25s | %-15.10f\n', 'Raíz (Método Secante)', raiz);
+    fprintf('%-25s | %-15.10f\n', 'Raíz (Control fzero)', raiz_fzero);
+    
+    diferencia = abs(raiz - raiz_fzero);
+    fprintf('Diferencia absoluta: %.10e\n', diferencia);
+    
+catch ME
+    disp('ERROR: fzero no pudo encontrar una raíz en el intervalo [a, b] dado.');
+    disp(ME.message);
+end
+% --- FIN: Bloque de comparación con FZERO ---
 end
